@@ -28,8 +28,6 @@ void app_activate(GLib.Application app) {
     print("You need a filename argument.\n");
 }
 
-delegate bool CloseCallbakFunc(Gtk.Window win);
-
 void app_open(GLib.Application app, File[] files, string hint) {
     var win = new Gtk.ApplicationWindow(app as Gtk.Application);
     win.title = "file editor";
@@ -48,7 +46,6 @@ void app_open(GLib.Application app, File[] files, string hint) {
             var tv = new TfeTextView();
             var tb = tv.get_buffer();
             tv.set_wrap_mode(CHAR);
-//            tv.set_editable(false);
             scr.set_child(tv);
 
             tv.file = f;
