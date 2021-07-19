@@ -21,11 +21,12 @@ int main(int argc, char **argv)
     int a = mask_len / 8;
     int b = mask_len % 8;
 
-    for (int i = 15; i > 15-a; i--) { /* 也把它写成网络字节序，方便下面的操作 */
-        ip6_prefix.__in6_u.__u6_addr8[i] = 0;
+    /* 根据 mask 的长度，把右边全部置 0，剩下的就是 prefix */
+    for (int i = 15; i > 15-a; i--) {
+        ip6_prefix.__in6_u.__u6_addr8[i] = 0;           /* 以字节为单位置 0 */
     }
     for (int i = 0; i < b; i++) {
-        ip6_prefix.__in6_u.__u6_addr8[15-a] &= ~(1<<i);
+        ip6_prefix.__in6_u.__u6_addr8[15-a] &= ~(1<<i); /* 可能还多一些不足一个字节的，0 '与'置 0 */
     }
 
     char prefix[INET6_ADDRSTRLEN] = "";
